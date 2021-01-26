@@ -12,13 +12,28 @@ export class AppConfigService {
   get name(): string {
     return this.configService.get<string>('app.name');
   }
+
   get env(): string {
     return this.configService.get<string>('app.env');
   }
+
   get url(): string {
     return this.configService.get<string>('app.url');
   }
+
   get port(): number {
     return Number(this.configService.get<number>('app.port'));
+  }
+
+  get jwtSecret(): string {
+    return String(this.configService.get<string>('app.jwtSecret'));
+  }
+
+  get jwtExpires(): string {
+    return String(this.configService.get<string>('app.jwtExpires'));
+  }
+
+  get passwordResetTTL(): number {
+    return Number(this.configService.get<number>('app.passwordResetTTL'));
   }
 }
