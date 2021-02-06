@@ -1,10 +1,16 @@
 name: Osiso Backend CI
 
 on:
-  push:
-    branches: [ $default-branch ]
+  on:
   pull_request:
-    branches: [ $default-branch ]
+    paths-ignore:
+      - '**.md'    
+  push:    
+    branches:
+      - main
+      - releases/*
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
