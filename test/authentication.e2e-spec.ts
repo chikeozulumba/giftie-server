@@ -17,13 +17,6 @@ let rider: User;
 let customer: User;
 
 describe('Authentication Controller (e2e)', () => {
-  console.log(process.env.APP_ENV);
-  console.log(process.env.TEST_DB_TYPE);
-  console.log(process.env.TEST_DB_HOST);
-  console.log(process.env.TEST_DB_PORT);
-  console.log(process.env.TEST_DB_USERNAME);
-  console.log(process.env.TEST_DB_PASSWORD);
-  console.log(process.env.TEST_DB_DATABASE);
   let app: INestApplication;
 
   beforeAll(async () => {
