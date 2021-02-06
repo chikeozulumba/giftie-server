@@ -16,13 +16,6 @@ env:
   REDIS_HOST: redis
   REDIS_PORT: 6379
 
-  TEST_DB_TYPE: postgres
-  TEST_DB_HOST: localhost
-  TEST_DB_PORT: 5432
-  TEST_DB_USERNAME: postgres
-  TEST_DB_PASSWORD: postgres
-  TEST_DB_DATABASE: appdbtest
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -63,11 +56,6 @@ jobs:
           # mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-version: 4.4
           mongodb-replica-set: test-rs
-      - name: Create databaseon Postgres
-        run: |
-          PGPASSWORD=postgres psql -U postgres -tc "SELECT 'CREATE DATABASE
-          appdbtest' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname =
-          'appdbtest')"
 
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -83,6 +71,13 @@ jobs:
 
       - name: Run end to end tests
         run: yarn test:e2e
+        env: 
+          TEST_DB_TYPE: postgres
+          TEST_DB_HOST: localhost
+          TEST_DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+          TEST_DB_USERNAME: postgres
+          TEST_DB_PASSWORD: postgres
+          TEST_DB_DATABASE: appdbtest
 
       - name: Run code coverage
         run: yarn test:cov
