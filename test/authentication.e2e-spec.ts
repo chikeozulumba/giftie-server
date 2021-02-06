@@ -7,14 +7,17 @@ import { Connection, Repository } from 'typeorm';
 import { User } from '../src/models/users/entities/user.entity';
 import { UserType } from '../src/models/user-type/entities/user-type.entity';
 import { UserTypeData } from './../src/database/seeders/user-type';
+import { exit } from 'process';
 
 let connection: Connection;
 let userRepository: Repository<User>;
 let userTypeRepository: Repository<UserType>;
+
 const userTypes: UserType[] = [];
 
 let rider: User;
 let customer: User;
+let server: request.SuperTest<request.Test>;
 
 describe('Authentication Controller (e2e)', () => {
   let app: INestApplication;
@@ -26,6 +29,8 @@ describe('Authentication Controller (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    server = request(app.getHttpServer());
 
     connection = app.get('Connection');
     await connection.synchronize(true);
@@ -63,34 +68,36 @@ describe('Authentication Controller (e2e)', () => {
   });
 
   describe('/auth/login (POST)', () => {
-    it('Should return statusCode of 401 "Unauthorized" when invalid credentials are sent', () => {
-      return request(app.getHttpServer())
+    it('Should return statusCode of 401 "Unauthorized" when invalid credentials are sent', (done) => {
+      return server
         .post('/auth/login')
         .send({
           phoneNumber: '08131976306',
           password: 'Passwords.',
         })
-        .expect(401);
+        .expect(401)
+        .end(done);
     });
 
-    it('Should return statusCode of 200 "OK" when valid credentials are sent', () => {
-      return request(app.getHttpServer())
+    it('Should return statusCode of 200 "OK" when valid credentials are sent', (done) => {
+      return server
         .post('/auth/login')
         .send({
           phoneNumber: '08131976306',
           password: 'Password.',
         })
-        .expect(200);
+        .expect(200)
+        .end(done);
     });
 
-    it('Should return statusCode of 422 "Unprocessable Entity" when malformed login data is sent', () => {
-      return request(app.getHttpServer()).post('/auth/login').expect(422);
+    it('Should return statusCode of 422 "Unprocessable Entity" when malformed login data is sent', (done) => {
+      return server.post('/auth/login').expect(422).end(done);
     });
   });
 
   describe('/auth/signup (POST)', () => {
-    it('Should return statusCode of 422 "Unprocessable Entity" when wrong phone number is sent', () => {
-      return request(app.getHttpServer())
+    it('Should return statusCode of 422 "Unprocessable Entity" when wrong phone number is sent', (done) => {
+      return server
         .post('/auth/signup')
         .send({
           firstName: 'Chike',
@@ -100,11 +107,12 @@ describe('Authentication Controller (e2e)', () => {
           phoneNumber: 'aaaaaaaaaaaaa',
           password: 'Password.',
         })
-        .expect(422);
+        .expect(422)
+        .end(done);
     });
 
-    it('Should return statusCode of 422 "Unprocessable Entity" when wrong email address is sent', () => {
-      return request(app.getHttpServer())
+    it('Should return statusCode of 422 "Unprocessable Entity" when wrong email address is sent', (done) => {
+      return server
         .post('/auth/signup')
         .send({
           firstName: 'Chike',
@@ -114,11 +122,12 @@ describe('Authentication Controller (e2e)', () => {
           phoneNumber: '12345678990',
           password: 'Password.',
         })
-        .expect(422);
+        .expect(422)
+        .end(done);
     });
 
-    it('Should return statusCode of 409 "Conflict" when duplicate credentials are sent', () => {
-      return request(app.getHttpServer())
+    it('Should return statusCode of 409 "Conflict" when duplicate credentials are sent', (done) => {
+      return server
         .post('/auth/signup')
         .send({
           firstName: 'Chike',
@@ -128,15 +137,18 @@ describe('Authentication Controller (e2e)', () => {
           phoneNumber: '08131976306',
           password: 'Password.',
         })
-        .expect(409);
+        .expect(409)
+        .end(done);
     });
 
-    it('Should return statusCode of 422 "Unprocessable Entity" when malformed signup data is sent', () => {
-      return request(app.getHttpServer()).post('/auth/signup').expect(422);
+    it('Should return statusCode of 422 "Unprocessable Entity" when malformed signup data is sent', (done) => {
+      return server.post('/auth/signup').expect(422).end(done);
     });
   });
 
   afterAll(async () => {
     await connection.dropDatabase();
+    await app.close();
+    exit(0);
   });
 });
