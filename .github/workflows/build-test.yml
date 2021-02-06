@@ -12,9 +12,9 @@ on:
       - '**.md'
 
 jobs:
-  container-job:
-    runs-on: ubuntu-latest
-    container: node:10.18-jessie
+  # container-job:
+  #   runs-on: ubuntu-latest
+  #   container: node:10.18-jessie
 
     services:
       redis:
