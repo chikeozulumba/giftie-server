@@ -53,6 +53,7 @@ jobs:
       matrix:
         node-version: [14.x, 15.x]
         os: [ubuntu-latest]
+        mongodb-version: [4.0, 4.2, 4.4]
 
     steps:
       - name: Start MongoDB
