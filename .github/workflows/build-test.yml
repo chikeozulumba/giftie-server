@@ -12,13 +12,46 @@ on:
       - '**.md'
 
 jobs:
-  build:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:10.18-jessie
 
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x, 15.x]
+    
+    env:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      TEST_DB_TYPE: postgres
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5432
+      TEST_DB_USERNAME: postgres
+      TEST_DB_PASSWORD: postgres
+      TEST_DB_DATABASE: logistics-app-test
 
     steps:
     - uses: actions/checkout@v2
