@@ -17,7 +17,7 @@ let rider: User;
 let customer: User;
 
 describe('Authentication Controller (e2e)', () => {
-  jest.useFakeTimers();
+  console.log(process.env.APP_ENV);
   let app: INestApplication;
 
   beforeAll(async () => {
