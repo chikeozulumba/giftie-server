@@ -51,15 +51,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 15.x]
+        node-version: [15.x]
         os: [ubuntu-latest]
-        mongodb-version: [4.0, 4.2, 4.4]
+        # mongodb-version: [4.0, 4.2, 4.4]
 
     steps:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.3.0
         with:
-          mongodb-version: ${{ matrix.mongodb-version }}
+          # mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-version: 4.4
           mongodb-replica-set: test-rs
       - uses: actions/checkout@v2
       - name: Use Node.js
