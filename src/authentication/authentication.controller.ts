@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from '../common/guards/authentication/local.guard';
 import { JoiValidationPipe } from '../common/pipes/joi-validation.pipe';
 import { AuthenticationService } from './authentication.service';
@@ -33,6 +33,7 @@ export class AuthenticationController {
    */
   @Public()
   @Post('/login')
+  @HttpCode(200)
   async LoginUser(
     @Body(new JoiValidationPipe(LoginUserValidation))
     body: LoginDto,
@@ -57,6 +58,7 @@ export class AuthenticationController {
    */
   @Public()
   @Post('/signup')
+  @HttpCode(201)
   async SignUpUser(
     @Body(new JoiValidationPipe(SignUpUserValidation))
     body: SignUpDto,
@@ -64,7 +66,7 @@ export class AuthenticationController {
     await this.authenticationService.signUpUser(body);
     return {
       statusCode: 201,
-      status: 'error',
+      status: 'success',
       message: 'Account created successfully',
     };
   }

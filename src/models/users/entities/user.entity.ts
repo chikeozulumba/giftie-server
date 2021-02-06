@@ -41,7 +41,7 @@ export class User {
 
   @Column('enum', {
     enum: ['pending', 'active', 'restricted', 'blacklisted'],
-    default: 'no',
+    default: 'pending',
   })
   accountStatus: string;
 

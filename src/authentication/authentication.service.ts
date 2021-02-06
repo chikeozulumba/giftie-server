@@ -165,11 +165,11 @@ export class AuthenticationService {
       throw new ConflictException({
         statusCode: 409,
         message: `${
-          checkUserExist.email === payload.email
+          (checkUserExist.email === payload.email
             ? 'Email'
             : checkUserExist.phoneNumber === payload.phoneNumber
             ? 'Phone number'
-            : 'Fields already in use.'
+            : '') + ' field already in use.'
         }`,
       });
     }
@@ -236,6 +236,7 @@ export class AuthenticationService {
           : pickBy({ id, email, phoneNumber }, identity),
       ],
     });
+
     if (isLogin) {
       const checkPassword = await bcrypt.compare(
         password,

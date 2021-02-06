@@ -3,7 +3,7 @@ import { Connection } from 'typeorm';
 import slugify from 'slugify';
 import { UserType } from '../../models/user-type/entities/user-type.entity';
 
-const UserTypeData = [
+export const UserTypeData = [
   {
     name: 'Rider',
   },
