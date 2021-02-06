@@ -32,7 +32,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: appdbtest
+          POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
@@ -77,7 +77,7 @@ jobs:
           TEST_DB_PORT: ${{ job.services.postgres.ports['5432'] }}
           TEST_DB_USERNAME: postgres
           TEST_DB_PASSWORD: postgres
-          TEST_DB_DATABASE: appdbtest
+          TEST_DB_DATABASE: postgres
 
       - name: Run code coverage
         run: yarn test:cov
