@@ -73,7 +73,7 @@ jobs:
         run: yarn test:e2e
         env: 
           TEST_DB_TYPE: postgres
-          TEST_DB_HOST: localhost
+          TEST_DB_HOST: postgres
           TEST_DB_PORT: ${{ job.services.postgres.ports['5432'] }}
           TEST_DB_USERNAME: postgres
           TEST_DB_PASSWORD: postgres
