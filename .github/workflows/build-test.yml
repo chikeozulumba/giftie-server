@@ -1,7 +1,6 @@
 name: Osiso Backend CI
 
 on:
-  on:
   pull_request:
     paths-ignore:
       - '**.md'    
