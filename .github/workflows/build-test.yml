@@ -21,7 +21,7 @@ env:
   TEST_DB_PORT: 5432
   TEST_DB_USERNAME: postgres
   TEST_DB_PASSWORD: postgres
-  TEST_DB_DATABASE: app-test
+  TEST_DB_DATABASE: appdbtest
 
 jobs:
   build:
@@ -39,7 +39,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: app-test
+          POSTGRES_DB: appdbtest
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
@@ -63,6 +63,12 @@ jobs:
           # mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-version: 4.4
           mongodb-replica-set: test-rs
+      - name: Create databaseon Postgres
+        run: |
+          PGPASSWORD=postgres psql -U postgres -tc "SELECT 'CREATE DATABASE
+          appdbtest' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname =
+          'appdbtest')"
+
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
