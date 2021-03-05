@@ -6,7 +6,7 @@ import { PostgresDatabaseProviderModule } from '../src/providers/database/postgr
 import { Connection, Repository } from 'typeorm';
 import { User } from '../src/models/users/entities/user.entity';
 import { UserType } from '../src/models/user-type/entities/user-type.entity';
-import { UserTypeData } from './../src/database/seeders/user-type';
+import { UserTypeData } from '../src/database/seeders/user-type';
 import { exit } from 'process';
 
 let connection: Connection;

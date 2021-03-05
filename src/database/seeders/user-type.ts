@@ -3,7 +3,7 @@ import { Connection } from 'typeorm';
 import slugify from 'slugify';
 import { UserType } from '../../models/user-type/entities/user-type.entity';
 
-export const UserTypeData = [
+const UserTypeData = [
   {
     name: 'Rider',
   },
@@ -19,7 +19,7 @@ export const UserTypeData = [
 }));
 
 export default class UserTypeSeeder implements Seeder {
-  public async run(factory: Factory, connection: Connection): Promise<any> {
+  public async run(factory: Factory, connection: Connection): Promise<void> {
     await connection
       .createQueryBuilder()
       .insert()
@@ -28,3 +28,5 @@ export default class UserTypeSeeder implements Seeder {
       .execute();
   }
 }
+
+exports = { UserTypeData };
