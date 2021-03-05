@@ -19,11 +19,6 @@ export class User1611394603013 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'userTypeId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
             name: 'firstName',
             type: 'varchar',
             isNullable: false,
@@ -81,25 +76,9 @@ export class User1611394603013 implements MigrationInterface {
       }),
       true,
     );
-
-    await queryRunner.createForeignKey(
-      'users',
-      new TableForeignKey({
-        columnNames: ['userTypeId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'user-types',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }),
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    const table = await queryRunner.getTable('users');
-    const foreignKey = table.foreignKeys.find(
-      (fk) => fk.columnNames.indexOf('userTypeId') !== -1,
-    );
-    await queryRunner.dropForeignKey('users', foreignKey);
     await queryRunner.dropTable('users');
   }
 }

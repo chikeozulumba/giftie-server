@@ -7,22 +7,11 @@ import {
   OneToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserType } from '../../user-type/entities/user-type.entity';
-import { Rider } from '../../riders/entities/rider.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @ManyToOne(() => UserType, (type) => type.users)
-  userType: UserType;
-
-  @OneToOne(() => Rider, (rider) => rider.user, {
-    onUpdate: 'NO ACTION',
-    onDelete: 'NO ACTION',
-  })
-  rider: Rider;
 
   @Column('varchar')
   firstName: string;
